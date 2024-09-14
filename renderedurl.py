@@ -21,4 +21,4 @@ def webhook():
     return jsonify({"status": "failed"}), 400
 
 if __name__ == '__main__':
-    app.run(port=10000)
+    app.run(port=1000)
