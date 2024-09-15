@@ -30,14 +30,20 @@ def webhook():
         if 'output' in data and data['output']:  # Checking if 'output' is present and not empty
             rendered_video_url = data['output']  # Directly get the 'output' as it is a string URL
             print(f"Rendered video URL: {rendered_video_url}")
-            return jsonify({"message": "Webhook received successfully", "video_url": rendered_video_url}), 200
+            return jsonify({
+                "message": "Webhook received successfully",
+                "video_url": rendered_video_url
+            }), 200
         else:
             print(f"Render failed or output not yet available: {data}")
-            return jsonify({"message": "Render failed or no output available"}), 400
+            return jsonify({
+                "message": "Render failed or no output available",
+                "data_received": data  # Include the received data in the response for easier debugging
+            }), 400
 
     except Exception as e:
         print(f"Error processing webhook: {e}")
-        return jsonify({"error": "Server error"}), 500
+        return jsonify({"error": "Server error", "details": str(e)}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # Get port from environment, default to 5000
