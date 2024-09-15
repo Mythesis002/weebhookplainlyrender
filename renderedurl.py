@@ -27,8 +27,8 @@ def webhook():
         print(f"Received webhook data (JSON): {data}")
 
         # Check if the render was successful and contains the output URL
-        if 'output' in data and 'url' in data['output']:
-            rendered_video_url = data['output']['url']
+        if 'output' in data and data['output']:  # Checking if 'output' is present and not empty
+            rendered_video_url = data['output']  # Directly get the 'output' as it is a string URL
             print(f"Rendered video URL: {rendered_video_url}")
             return jsonify({"message": "Webhook received successfully", "video_url": rendered_video_url}), 200
         else:
@@ -42,4 +42,3 @@ def webhook():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # Get port from environment, default to 5000
     app.run(host='0.0.0.0', port=port)
-
