@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import json
 import os
 
 app = Flask(__name__)
@@ -7,52 +8,43 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     try:
-        # Log raw request data to check the received payload
+        # Log raw request data to check if it's JSON
         raw_data = request.data
         print(f"Raw webhook data: {raw_data}")
 
-        # Log the Content-Type to confirm it's JSON
+        # Check if Content-Type is 'application/json'
         content_type = request.headers.get('Content-Type')
         print(f"Content-Type: {content_type}")
 
-        # Attempt to parse the request data as JSON
+        # Attempt to get the request data as JSON
         data = request.get_json()
 
         if data is None:
-            print("Invalid JSON payload received.")
+            print("Invalid JSON payload")
             return jsonify({"error": "Invalid JSON payload"}), 400
 
-        # Log the JSON data to understand its structure
+        # Print the received data for debugging purposes
         print(f"Received webhook data (JSON): {data}")
 
-        # Attempt to extract the status and render URL fields
-        render_status = data.get('status')
-        render_url = data.get('renderUrl') or data.get('output')
-
-        # Log the render status and URL
-        print(f"Render Status: {render_status}")
-        print(f"Rendered Video URL: {render_url}")
-
-        # Check if the rendering was successful and if URL is available
-        if render_status == 'completed' and render_url:
+        # Check if the render was successful and contains the output URL
+        if 'output' in data and data['output']:  # Checking if 'output' is present and not empty
+            rendered_video_url = data['output']  # Directly get the 'output' as it is a string URL
+            print(f"Rendered video URL: {rendered_video_url}")
             return jsonify({
-                "message": "Render completed successfully",
-                "video_url": render_url
+                "message": "Webhook received successfully",
+                "video_url": rendered_video_url
             }), 200
         else:
-            # Log what was actually received if the URL isn't present
-            print(f"Render not completed or URL not provided: {data}")
+            print(f"Render failed or output not yet available: {data}")
             return jsonify({
-                "message": "Render not completed or failed",
-                "data_received": data
+                "message": "Render failed or no output available",
+                "data_received": data  # Include the received data in the response for easier debugging
             }), 400
 
     except Exception as e:
-        # Log any exception that occurs during processing
         print(f"Error processing webhook: {e}")
         return jsonify({"error": "Server error", "details": str(e)}), 500
 
-
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Get the port from environment, default to 5000
+    port = int(os.environ.get('PORT', 5000))  # Get port from environment, default to 5000
     app.run(host='0.0.0.0', port=port)
