@@ -17,7 +17,7 @@ API_USERNAME = "0CG5AqfItJaK8mQTDtCQLCOo1iPny0B8"  # Replace with your actual us
 API_PASSWORD = ""  # Replace with your actual password
 
 # Webhook URL of this server
-WEBHOOK_URL = "https://5dc7-2409-4063-4ab2-d282-f5fe-2cca-9868-29d7.ngrok-free.app/webhook"  # Update with your server URL
+WEBHOOK_URL = "https://weebhookplainlyrender.onrender.com/webhook"  # Update with your server URL
 
 # Dictionary to keep track of render statuses and results
 render_results = {}
