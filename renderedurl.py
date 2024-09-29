@@ -13,7 +13,7 @@ CORS(app)
 
 # API endpoint and credentials for Plainly API
 PLAINLY_API_URL = "https://api.plainlyvideos.com/api/v2/renders"
-API_USERNAME = "0CG5AqfItJaK8mQTDtCQLCOo1iPny0B8"  # Replace with your actual username
+API_USERNAME = "YgHV4vmDMaMynM1h3ZmSxx6f4OmLMbkT"  # Replace with your actual username
 API_PASSWORD = ""  # Replace with your actual password
 
 # Webhook URL of this server
